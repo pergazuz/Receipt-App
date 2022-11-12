@@ -1,0 +1,51 @@
+{% extends 'receipt/report_base.html' %}
+
+{% block title %}Receipt Report{% endblock %}
+
+{% block content %}
+<div class='row'>
+    <div class='col-sm'>
+    Receipt No: {{ receipt.receipt_no }}<br>
+    </div>
+    <div class='col-sm'>
+    Receipt Date: {{ receipt.date }}<br>
+    </div>
+</div>
+<div class='row'>
+    <div class='col-sm'>
+    Customer Code: {{ receipt.customer_code }}<br>
+    </div>
+</div>
+<table class='table'>
+    <tr>
+        <th>#</th>
+        <th>Product Code</th>
+        <th>Product Name</th>
+        <th>Unit Price</th>
+        <th>Quantity</th>
+        <th>Extended Price</th>
+    </tr>
+{% for lineitem in invoicelineitem %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ lineitem.product_code }}</td>
+        <td>{{ lineitem.product_code__name }}</td>
+        <td align='right'>{{ lineitem.amount_due }}</td>
+        <td align='right'>{{ lineitem.amount_received }}</td>
+    <tr>
+{% endfor %}
+    <tr>
+        <td colspan='4'></td>
+        <td align='right'>Total Price</td><td align='right'>{{ receipt.total }}</td>
+    </tr>
+    <tr>
+        <td colspan='4'></td>
+        <td align='right'>VAT</td><td align='right'>{{ receipt.vat }}</td>
+    </tr>
+    <tr>
+        <td colspan='4'></td>
+        <td align='right'>Amount Due</td><td align='right'>{{ receipt.amount_due }}</td>
+    </tr>
+</table>
+
+{% endblock %}

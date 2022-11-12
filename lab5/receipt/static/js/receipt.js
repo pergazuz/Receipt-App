@@ -1,16 +1,15 @@
-
 var ROW_NUMBER = 5;
 
 $(document).ready( function () {
 
     /* set up text box inovice data to datepicker, it popup calendar after click text box */
-    $("#txt_InvoiceDate").datepicker({ 
+    $("#txt_ReceiptDate").datepicker({ 
         dateFormat: 'dd/mm/yy' 
     });
     
     /* When click button calendar, call datepicker show, it popup calendar after click  button */
-    $('#btn_InvoiceDate').click(function() {
-        $('#txt_InvoiceDate').datepicker('show');
+    $('#btn_ReceiptDate').click(function() {
+        $('#txt_ReceiptDate').datepicker('show');
     });
 
     /* Add one row to table (in last row), When click button '+' in header of table */
@@ -114,19 +113,19 @@ $(document).ready( function () {
         $(this).parents('tr').find('.order_no').html('*');  // mark row number with '*' for return value after close modal
 
         $.ajax({                                        // call backend /product/list
-            url:  '/product/list',
+            url:  '/invoice/list',
             type:  'get',
             dataType:  'json',
             success: function  (data) {
                 let rows =  '';
                 var i = 1;
-                data.products.forEach(product => {       // loop each result of products to create table rows
+                data.invoices.forEach(invoice => {       // loop each result of products to create table rows
                     rows += `
                     <tr>
                         <td>${i++}</td>
-                        <td><a class='a_click' href='#'>${product.code}</a></td>
-                        <td>${product.name}</td>
-                        <td>${formatNumber(product.units)}</td>
+                        <td><a class='a_click' href='#'>${invoice.code}</a></td>
+                        <td>${invoice.name}</td>
+                        <td>${formatNumber(invoice.units)}</td>
                         <td class='hide'></td>
                     </tr>`;
                 });
@@ -167,13 +166,13 @@ $(document).ready( function () {
         } else if ($('#txt_modal_param').val() == 'customer_code') {
             $('#txt_CustomerCode').val(code);
             $('#txt_CustomerName').val(name);
-        } else if ($('#txt_modal_param').val() == 'invoice_no') {
-            $('#txt_InvoiceNo').val(code);
-            $('#txt_InvoiceDate').val(name);
+        } else if ($('#txt_modal_param').val() == 'receipt_no') {
+            $('#txt_ReceiptNo').val(code);
+            $('#txt_ReceiptDate').val(name);
             $('#txt_CustomerCode').val(note);
             $('#txt_CustomerCode').change();
 
-            get_invoice_detail(code);
+            get_receipt_detail(code);
         }
 
         $('#modal_form').modal('toggle');               // close modal
@@ -193,32 +192,32 @@ $(document).ready( function () {
     /* Click button 'EDIT', load invoice list to modal */
     $('#btnEdit').click(function () {
         $.ajax({                                        // call backend /invoice/list
-            url:  '/invoice/list',
+            url:  '/receipt/list',
             type:  'get',
             dataType:  'json',
             success: function  (data) {
                 let rows =  '';
                 var i = 1;
-                data.invoices.forEach(invoice => {      // loop each result of invoices to create table rows
-                    var invoice_date = invoice.date;
+                data.receipts.forEach(receipt => {      // loop each result of invoices to create table rows
+                    var receipt_date = receipt.date;
                     // Change format date from 01-12-2022 -> 01/12/2022
-                    invoice_date = invoice_date.slice(0,10).split('-').reverse().join('/');
+                    receipt_date = receipt_date.slice(0,10).split('-').reverse().join('/');
                     rows += `
                     <tr>
                         <td>${i++}</td>
-                        <td><a class='a_click' href='#'>${invoice.invoice_no}</a></td>
-                        <td>${invoice_date}</td>
-                        <td>${invoice.customer_code_id}</td>
+                        <td><a class='a_click' href='#'>${receipt.receipt_no}</a></td>
+                        <td>${receipt_date}</td>
+                        <td>${receipt.customer_code_id}</td>
                         <td class='hide'></td>
                     </tr>`;
                 });
                 $('#table_modal > tbody').html(rows);      // set new table rows to table body (tbody) of popup
 
-                $('#model_header_1').text('Invoice No');    // set header of popup
-                $('#model_header_2').text('Invoice Date');
+                $('#model_header_1').text('Receipt No');    // set header of popup
+                $('#model_header_2').text('Receipt Date');
                 $('#model_header_3').text('Customer Code');
 
-                $('#txt_modal_param').val('invoice_no');    // mark invoice_no for check after close modal
+                $('#txt_modal_param').val('receipt_no');    // mark invoice_no for check after close modal
                 $('#modal_form').modal();                   // open popup
             },
         });        
@@ -232,19 +231,19 @@ $(document).ready( function () {
             $('#txt_CustomerCode').focus();
             return false;
         }
-        var invoice_date = $('#txt_InvoiceDate').val().trim();      // get invoice data from text box
-        if (!dateRegex.test(invoice_date)) {                        // check invoice data is correct format DD/MM/YYYY
+        var receipt_date = $('#txt_ReceiptDate').val().trim();      // get invoice data from text box
+        if (!dateRegex.test(receipt_date)) {                        // check invoice data is correct format DD/MM/YYYY
             alert('กรุณาระบุวันที่ ให้ถูกต้อง');
-            $('#txt_InvoiceDate').focus();
+            $('#txt_ReceiptDate').focus();
             return false;
         }
-        if ($('#txt_InvoiceNo').val() == '<new>') {                 // check invoice no in form, if invoice no = <new> then call create otherwise call update
+        if ($('#txt_ReceiptNo').val() == '<new>') {                 // check invoice no in form, if invoice no = <new> then call create otherwise call update
             var token = $('[name=csrfmiddlewaretoken]').val();      // get django security code
                   
             $.ajax({                                                // call backend /invoice/create
-                url:  '/invoice/create',
+                url:  '/receipt/create',
                 type:  'post',
-                data: $('#form_invoice').serialize() + "&lineitem=" +lineitem_to_json(),
+                data: $('#form_receipt').serialize() + "&lineitem=" +lineitem_to_json(),
                 headers: { "X-CSRFToken": token },
                 dataType:  'json',
                 success: function  (data) {
@@ -252,7 +251,7 @@ $(document).ready( function () {
                         console.log(data.error);
                         alert('การบันทึกล้มเหลว');
                     } else {
-                        $('#txt_InvoiceNo').val(data.invoice.invoice_no)    // SAVE success, show new invoice no
+                        $('#txt_ReceiptNo').val(data.receipt.receipt_no)    // SAVE success, show new invoice no
                         alert('บันทึกสำเร็จ');
                     }                    
                 },
@@ -261,9 +260,9 @@ $(document).ready( function () {
             var token = $('[name=csrfmiddlewaretoken]').val();      // get django security code
 
             $.ajax({                                                // call backend /invoice/update
-                url:  '/invoice/update',
+                url:  '/receipt/update',
                 type:  'post',
-                data: $('#form_invoice').serialize() + "&lineitem=" +lineitem_to_json() + "&invoice_no=" + $('#txt_InvoiceNo').val(),
+                data: $('#form_receipt').serialize() + "&lineitem=" +lineitem_to_json() + "&receipt_no=" + $('#txt_ReceiptNo').val(),
                 headers: { "X-CSRFToken": token },
                 dataType:  'json',
                 success: function  (data) {
@@ -280,16 +279,16 @@ $(document).ready( function () {
 
     /* Click button 'DELETE', call backend /invoice/delete */
     $('#btnDelete').click(function () {
-        if ($('#txt_InvoiceNo').val() == '<new>') {
-            alert ('ไม่สามารถลบ Invoice ใหม่ได้');
+        if ($('#txt_ReceiptNo').val() == '<new>') {
+            alert ('ไม่สามารถลบ Receipt ใหม่ได้');
             return false;
         }
-        if (confirm ("คุณต้องการลบ Invoice No : '" + $('#txt_InvoiceNo').val() + "' ")) {
-            console.log('Delete ' + $('#txt_InvoiceNo').val());
+        if (confirm ("คุณต้องการลบ Receipt No : '" + $('#txt_ReceiptNo').val() + "' ")) {
+            console.log('Delete ' + $('#txt_ReceiptNo').val());
             var token = $('[name=csrfmiddlewaretoken]').val();          // get django security code
             $.ajax({                                                    // call backend /invoice/delete
-                url:  '/invoice/delete',
-                data: 'invoice_no=' + $('#txt_InvoiceNo').val(),
+                url:  '/receipt/delete',
+                data: 'receipt_no=' + $('#txt_ReceiptNo').val(),
                 type:  'post',
                 headers: { "X-CSRFToken": token },
                 dataType:  'json',
@@ -302,10 +301,10 @@ $(document).ready( function () {
 
     /* Click button 'PRINT', open new tab of browser with /invoice/reprot/<invpoce_no> */
     $('#btnPrint').click(function () {
-        if ($('#txt_InvoiceNo').val() == '<new>') {
+        if ($('#txt_ReceiptNo').val() == '<new>') {
             return false;
         }
-        window.open('/invoice/report/' + $('#txt_InvoiceNo').val());
+        window.open('/receipt/report/' + $('#txt_ReceiptNo').val());
     });
 
     /* Start from */
@@ -337,25 +336,25 @@ function lineitem_to_json () {
 }
 
 /* get invoice detail from backend with invoice_no and fill to the form */
-function get_invoice_detail (invoice_no) {
+function get_receipt_detail (receipt_no) {
     $.ajax({                                                            // call backend /invoice/detail/IN100/22
-        url:  '/invoice/detail/' + encodeURIComponent(invoice_no),
+        url:  '/receipt/detail/' + encodeURIComponent(receipt_no),
         type:  'get',
         dataType:  'json',
         success: function  (data) {
             console.log(data);
 
             reset_table();                                              // reset table
-            for(var i=ROW_NUMBER;i<data.invoicelineitem.length;i++) {   // generate row by number of result
+            for(var i=ROW_NUMBER;i<data.receiptlineitem.length;i++) {   // generate row by number of result
                 add_last_one_row();
             }
             var i = 0;
             $("#table_main tbody tr").each(function() {                 // fill result data to each row
-                if (i < data.invoicelineitem.length) {
-                    $(this).find('.project_code_1 > span').html(data.invoicelineitem[i].product_code);
-                    $(this).find('.product_name').html(data.invoicelineitem[i].product_code__name);
-                    $(this).find('.unit_price').html(data.invoicelineitem[i].unit_price);
-                    $(this).find('.quantity').html(data.invoicelineitem[i].quantity);
+                if (i < data.receiptlineitem.length) {
+                    $(this).find('.project_code_1 > span').html(data.receiptlineitem[i].product_code);
+                    $(this).find('.product_name').html(data.receiptlineitem[i].product_code__name);
+                    $(this).find('.unit_price').html(data.receiptlineitem[i].unit_price);
+                    $(this).find('.quantity').html(data.receiptlineitem[i].quantity);
                 }
                 i++;
             });
@@ -395,12 +394,12 @@ function re_calculate_total_price () {
 
 /* Reset form to original form */
 function reset_form() {
-    $('#txt_InvoiceNo').attr("disabled", "disabled");
-    $('#txt_InvoiceNo').val('<new>');
+    $('#txt_ReceiptNo').attr("disabled", "disabled");
+    $('#txt_ReceiptNo').val('<new>');
 
     reset_table();
     
-    $('#txt_InvoiceDate').val(new Date().toJSON().slice(0,10).split('-').reverse().join('/'));
+    $('#txt_ReceiptDate').val(new Date().toJSON().slice(0,10).split('-').reverse().join('/'));
 
     $('#txt_CustomerCode').val('');
     $('#txt_CustomerName').val('');

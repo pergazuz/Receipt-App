@@ -37,28 +37,28 @@
         <input type='image' id='btnPrint' src="{% static 'images/printOn.gif' %}"  alt="printOn">
     </div>
     <br />
-    <form id='form_invoice' action='/'>
+    <form id='form_receipt' action='/'>
     {% csrf_token %}
     <div class="container-fluid">
         <div class='form-row align-items-center'>
             <div class="col-lg-4 col-md-8 col-12 col-auto">
                 <div class='input-group mb-2'>
                     <div class='input-group-prepend'>
-                        <div class='input-group-text'>*Invoice No :</div>
+                        <div class='input-group-text'>*Receipt No :</div>
                     </div>
-                    <input type='text' id='txt_InvoiceNo' name='invoice_no' class='form-control' placeholder='Invoice No'>
+                    <input type='text' id='txt_ReceiptNo' name='receipt_no' class='form-control' placeholder='Receipt No'>
                 </div>
             </div>
             <div class="col-0 col-lg-1"></div>
             <div class="col-lg-4 col-md-8 col-12 col-auto">
                 <div class='input-group mb-2'>
                     <div class='input-group-prepend'>
-                        <div class='input-group-text'>*Invoice Date :</div>
+                        <div class='input-group-text'>*Receipt Date :</div>
                     </div>
-                    <input type='text' id='txt_InvoiceDate' name='date' class='form-control' required>
+                    <input type='text' id='txt_ReceiptDate' name='date' class='form-control' required>
                     <div class="valid-feedback">Valid.</div>
                     <div class="invalid-feedback">Check this checkbox to continue.</div>
-                    <button type='button' class="btn btn-default" id='btn_InvoiceDate'>
+                    <button type='button' class="btn btn-default" id='btn_ReceiptDate'>
                         <span class="glyphicon glyphicon-calendar"></span>
                     </button>
                 </div>
@@ -84,18 +84,19 @@
         </div>
     </div>
     <br />
-    Products Sold:
+    Report Unpaid Invoices:
     <div id='div_table' class="table-responsive-sm table-editable">
         {% block main %}
         <table id='table_main' class="table table-sm table-fixed table-bordered">
             <thead>
                 <tr class="d-flex">
                     <td class="col-1 table-active" align="center"><b>#</b></td>
-                    <th class="col-2 table-active" scope="row" >*Product Code</th>
-                    <th class="col-3 table-active" scope="row" >Name</th>
-                    <th class="col-2 table-active" scope="row" >*Unit Price</th>
-                    <th class="col-1 table-active" scope="row" >*Quantity</th>
-                    <th class="col-2 table-active" scope="row" >Extended Price</th>
+                    <th class="col-2 table-active" scope="row" >*Invoice No</th>
+                    <th class="col-3 table-active" scope="row" >Date</th>
+                    <th class="col-4 table-active" scope="row" >Customer Code</th>
+                    <th class="col-5 table-active" scope="row" >Customer Name</th>
+                    <th class="col-6 table-active" scope="row" >*Amount Due</th>
+                    <th class="col-7 table-active" scope="row" >*Amount Received</th>
                     <td class="col-1" align="center">
                         <span class="table-add glyphicon glyphicon-plus"></span>
                     </td>
