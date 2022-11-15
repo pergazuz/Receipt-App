@@ -27,7 +27,7 @@ urlpatterns = [
     path('customer/detail/<customer_code>', views.CustomerDetail.as_view(), name='customer_detail'),
 
     
-    #path('invoice/list', views.InvoiceList.as_view(), name='invoice_list'),
+    path('invoice/list', views.InvoiceList.as_view(), name='invoice_list'),
     #path('invoice/detail/<str:pk>/<str:pk2>', views.InvoiceDetail.as_view(), name='invoice_detail'),
     #path('invoice/create', views.InvoiceCreate.as_view(), name='invoice_create'),
     #path('invoice/update', views.InvoiceUpdate.as_view(), name='invoice_update'),
@@ -41,5 +41,6 @@ urlpatterns = [
     path('receipt/update', views.ReceiptUpdate.as_view(), name='receipt_update'),
     path('receipt/delete', views.ReceiptDelete.as_view(), name='receipt_delete'),
     path('receipt/report/<str:pk>/<str:pk2>', views.ReceiptReport.as_view(), name='receipt_report'),
+
 
 ]

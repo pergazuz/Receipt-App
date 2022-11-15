@@ -41,7 +41,7 @@
     {% csrf_token %}
     <div class="container-fluid">
         <div class='form-row align-items-center'>
-            <div class="col-lg-4 col-md-8 col-12 col-auto">
+            <div class="col-lg-6 col-md-8 col-12 col-auto">
                 <div class='input-group mb-2'>
                     <div class='input-group-prepend'>
                         <div class='input-group-text'>*Receipt No :</div>
@@ -49,8 +49,8 @@
                     <input type='text' id='txt_ReceiptNo' name='receipt_no' class='form-control' placeholder='Receipt No'>
                 </div>
             </div>
-            <div class="col-0 col-lg-1"></div>
-            <div class="col-lg-4 col-md-8 col-12 col-auto">
+            <!-- <div class="col-0 col-lg-1"></div> -->
+            <div class="col-lg-6 col-md-9 col-13 col-auto">
                 <div class='input-group mb-2'>
                     <div class='input-group-prepend'>
                         <div class='input-group-text'>*Receipt Date :</div>
@@ -66,8 +66,8 @@
         </div>
         <br />
         <div class='form-row'>
-            <div class="col-lg-4 col-md-8 col-12 col-auto">
-                <div class='input-group mb-2'>
+            <div class="col-lg-12 col-md-8 col-12 col-auto">
+                <div class='input-group mb-4'>
                     <div class='input-group-prepend'>
                         <div class='input-group-text'>*Customer :</div>
                     </div>
@@ -77,6 +77,9 @@
                     <button type='button' class="btn btn-default btn-sm search_customer_code">
                         <span class="glyphicon glyphicon-search"></span>
                     </button>
+                    <div class='input-group-prepend'>
+                        <div class='input-group-text'>Customer Name :</div>
+                    </div>
                     <input type='text' id='txt_CustomerName' name='customer_name' class='form-control' value='' readonly>
                     <input type='hidden' id='txt_DueDate' name='due_date' />
                 </div>
@@ -92,11 +95,11 @@
                 <tr class="d-flex">
                     <td class="col-1 table-active" align="center"><b>#</b></td>
                     <th class="col-2 table-active" scope="row" >*Invoice No</th>
-                    <th class="col-3 table-active" scope="row" >Date</th>
-                    <th class="col-4 table-active" scope="row" >Customer Code</th>
-                    <th class="col-5 table-active" scope="row" >Customer Name</th>
-                    <th class="col-6 table-active" scope="row" >*Amount Due</th>
-                    <th class="col-7 table-active" scope="row" >*Amount Received</th>
+                    <th class="col-2 table-active" scope="row" >Date</th>
+                    <th class="col-2 table-active" scope="row" >Customer Code</th>
+                    <th class="col-1 table-active" scope="row" >Customer Name</th>
+                    <th class="col-2 table-active" scope="row" >*Amount Due</th>
+                    <th class="col-1 table-active" scope="row" >*Amount Received</th>
                     <td class="col-1" align="center">
                         <span class="table-add glyphicon glyphicon-plus"></span>
                     </td>
@@ -106,14 +109,16 @@
                     <td class="col-1 order_no table-active" scope="row" align="center"></td>
                     <td class="col-2 project_code_1" scope="row" align="right">
                         <span class='project_code'></span>
-                        <button type='button' class="btn btn-default btn-sm search_product_code">
+                        <button type='button' class="btn btn-default btn-sm search_invoice_code">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </td>
-                    <td class="col-3 product_name table-warning" scope="row"></td>
+                    <td class="col-2 product_name table-warning" scope="row"></td>
+                    <td class="col-2 product_name table-warning" scope="row"></td>
+                    <td class="col-1 date table-warning" scope="row"></td>
                     <td class="col-2 unit_price" scope="row" pattern="^[0-9]" align="right" contenteditable="true"></td>
                     <td class="col-1 quantity" scope="row" pattern="^[0-9]" align="right" contenteditable="true"></td>
-                    <td class="col-2 extended_price table-warning" scope="row" align="right"></td>
+                    <!-- <td class="col-2 extended_price table-warning" scope="row" align="right"></td> -->
                     <td class="col-1"align="center">
                         <span class="table-remove glyphicon glyphicon-remove"></span>
                     </td>
@@ -124,22 +129,16 @@
             </tbody>
             <tfoot>
                 <tr class="d-flex">
-                    <td class="col-9" scope="row" colspan='5' align="right" class='border-0'>Total Price : </td>
-                    <td class="col-2 table-warning" scope="row" align="right"><label id='lbl_TotalPrice' ></label></td>
+                    <td class="col-10" scope="row" colspan='6' align="right" class='border-0'>Total Received : </td>
+                    <td class="col-2 table-warning" scope="row" align="right"><label id='lbl_TotalReceived' ></label></td>
                     <td class="col-1"align="center"></td>
-                    <input type='hidden' id='txt_TotalPrice' name='total' />
+                    <input type='hidden' id='txt_TotalReceived' name='Total Received' />
                 </tr>
                 <tr class="d-flex">
-                    <td class="col-9" scope="row" colspan='5' align="right" class='border-0'>VAT : </td>
-                    <td class="col-2 table-warning" scope="row" align="right"><label id='lbl_VAT' ></label></td>
+                    <td class="col-10" scope="row" colspan='6' align="right" class='border-0'>Number : </td>
+                    <td class="col-2 table-warning" scope="row" align="right"><label id='lbl_TotalReceived' ></label></td>
                     <td class="col-1"align="center"></td>
-                    <input type='hidden' id='txt_VAT' name='vat' />
-                </tr>
-                <tr class="d-flex">
-                    <td class="col-9" scope="row" colspan='5' align="right" class='border-0'>Amount Due : </td>
-                    <td class="col-2 table-warning" scope="row" align="right"><label id='lbl_AmountDue' ></label></td>
-                    <td class="col-1"align="center"></td>
-                    <input type='hidden' id='txt_AmountDue' name='amount_due' />
+                    <input type='hidden' id='txt_TotalReceived' name='Total Received' />
                 </tr>
             </toot>
         </table>

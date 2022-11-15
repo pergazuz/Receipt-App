@@ -109,7 +109,7 @@ $(document).ready( function () {
 
     /* search product code, load product list to Modal and show popup */
     /* when click button magnifying glass after Product Code in table */
-    $('.search_product_code').click(function () {
+    $('.search_invoice_code').click(function () {
         $(this).parents('tr').find('.order_no').html('*');  // mark row number with '*' for return value after close modal
 
         $.ajax({                                        // call backend /product/list
@@ -123,20 +123,21 @@ $(document).ready( function () {
                     rows += `
                     <tr>
                         <td>${i++}</td>
-                        <td><a class='a_click' href='#'>${invoice.code}</a></td>
-                        <td>${invoice.name}</td>
-                        <td>${formatNumber(invoice.units)}</td>
+                        <td><a class='a_click' href='#'>${invoice.invoice_no}</a></td>
+                        <td>${invoice.date}</td>
+                        <td>${formatNumber(invoice.total)}</td>
                         <td class='hide'></td>
                     </tr>`;
                 });
                 $('#table_modal > tbody').html(rows);       // set new table rows to table body (tbody) of popup
 
-                $('#model_header_1').text('Product Code');      // set header of popup
-                $('#model_header_2').text('Product Name');
-                $('#model_header_3').text('Unit Price');
+                $('#model_header_1').text('Invoice No');      // set header of popup
+                $('#model_header_2').text('Date');
+                $('#model_header_3').text('Total');
 
                 
-                $('#txt_modal_param').val('product_code');      // mark product_code for check after close modal
+                $('#txt_modal_param').val('invoice_no');      // mark product_code for check after close modal
+              
                 $('#modal_form').modal();                       // open popup
             },
         });
@@ -149,16 +150,16 @@ $(document).ready( function () {
         var note = $(this).parents('tr').find('td:nth-child(4)').html();
         var option = $(this).parents('tr').find('td:nth-child(5)').html();
 
-        if ($('#txt_modal_param').val() == 'product_code') {
+          if ($('#txt_modal_param').val() == 'invoice_no') {
             // Loop each in data table
             $("#table_main tbody tr").each(function() {
                 // Return data in row number = * (jquery mark * before popup (modal) )
                 if ($(this).find('.order_no').html() == '*') {
                     // return selected product detail (code,name,units) to table row
                     $(this).find('.project_code_1 > span').html(code);
-                    $(this).find('.product_name').html(name);
-                    $(this).find('.unit_price').html(note);
-                    $(this).find('.quantity').html("1");           // default quantiy is '1'
+                    $(this).find('.invoice_no').html(name);
+                    $(this).find('.date').html(note);
+                    $(this).find('.customer_code').html("1");           // default quantiy is '1'
                 }
             });
             

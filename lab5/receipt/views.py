@@ -217,3 +217,33 @@ def reFormatNumber(str):
         if (str == ''):
             return ''
         return str.replace(",", "")
+
+
+
+class InvoiceList(View):
+    def get(self, request):
+        invoices = list(Invoice.objects.order_by('invoice_no').all().values())
+        data = dict()
+        data['invoices'] = invoices
+
+        return JsonResponse(data)
+
+class InvoiceDetail(View):
+    def get(self, request, pk, pk2):
+
+        invoice_no = pk + '/' + pk2
+
+        invoice = list(Invoice.objects.select_related('customer_code')
+            .filter(invoice_no=invoice_no)
+            .values('invoice_no', 'date', 'customer_code', 'customer_code__name', 'due_date'
+            , 'total', 'vat', 'amount_due'))
+        invoicelineitem = list(InvoiceLineItem.objects.select_related('product_code')
+            .filter(invoice_no=invoice_no)
+            .values('invoice_no', 'item_no', 'product_code', 'product_code__name', 'unit_price'
+            , 'quantity', 'product_total'))
+
+        data = dict()
+        data['invoice'] = invoice
+        data['invoicelineitem'] = invoicelineitem
+
+        return JsonResponse(data)
