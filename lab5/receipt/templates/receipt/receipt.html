@@ -87,6 +87,55 @@
         </div>
     </div>
     <br />
+    <div class='form-row'>
+        <div class="col-lg-4 col-md-8 col-12 col-auto">
+            <div class='input-group mb-2'>
+                <div class='input-group-prepend'>
+                    <div class='input-group-text'>*Payment Method :</div>
+                </div>
+                <input type='hidden' id='txt_PaymentMethod' name='payment_thod' class='form-control' placeholder='Payment Method' required>
+                <input type='text' id='txt_Description' name='description' class='form-control' placeholder='Payment Method' required>
+                <div class="valid-feedback">Valid.</div>
+                <div class="invalid-feedback">Check this checkbox to continue.</div>
+                <button type='button' class="btn btn-default btn-sm search_payment_method">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </div>
+        </div>
+        <div class="col-0 col-lg-1"></div>
+        <div class="col-lg-4 col-md-8 col-12 col-auto">
+            <div class='input-group mb-2'>
+                <div class='input-group-prepend'>
+                    <div class='input-group-text'>Payment Reference :</div>
+                </div>
+                <input type='text' id='txt_PaymentReference' name='payment_reference' class='form-control'>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class='form-row align-items-center'>
+        <div class="col-lg-4 col-md-8 col-12 col-auto">
+            <div class='input-group mb-2'>
+                <div class='input-group-prepend'>
+                    <div class='input-group-text'>Total received :</div>
+                </div>
+                <input type='text' id='txt_TotalReceived' name='total_received' class='form-control' value='' readonly>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class='form-row align-items-center'>
+        <div class="col-lg-4 col-md-8 col-12 col-auto">
+            <div class='input-group mb-2'>
+                <div class='input-group-prepend'>
+                    <div class='input-group-text'>remerks :</div>
+                </div>
+                <input type='text' id='txt_Remarks' name='remarks' class='form-control'>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
     Report Unpaid Invoices:
     <div id='div_table' class="table-responsive-sm table-editable">
         {% block main %}
@@ -95,30 +144,26 @@
                 <tr class="d-flex">
                     <td class="col-1 table-active" align="center"><b>#</b></td>
                     <th class="col-2 table-active" scope="row" >*Invoice No</th>
-                    <th class="col-2 table-active" scope="row" >Date</th>
-                    <th class="col-2 table-active" scope="row" >Customer Code</th>
-                    <th class="col-1 table-active" scope="row" >Customer Name</th>
-                    <th class="col-2 table-active" scope="row" >*Amount Due</th>
-                    <th class="col-1 table-active" scope="row" >*Amount Received</th>
+                    <th class="col-2 table-active" scope="row" >Invoice Date</th>
+                    <th class="col-2 table-active" scope="row" >Invoice Full Amount</th>
+                    <th class="col-2 table-active" scope="row" >Invoice Amount Remain</th>
+                    <th class="col-2 table-active" scope="row" >Amount Paid Here</th>
                     <td class="col-1" align="center">
                         <span class="table-add glyphicon glyphicon-plus"></span>
                     </td>
                 </tr>
-                <!-- Hidden Table Row (tr) for Copy to Fill Data -->
                 <tr class="d-flex hide">
                     <td class="col-1 order_no table-active" scope="row" align="center"></td>
-                    <td class="col-2 project_code_1" scope="row" align="right">
-                        <span class='project_code'></span>
-                        <button type='button' class="btn btn-default btn-sm search_invoice_code">
+                    <td class="col-2 invoice_no_pk" scope="row" align="right">
+                        <span class='invoice_no'></span>
+                        <button type='button' class="btn btn-default btn-sm search_invoice_no">
                             <span class="glyphicon glyphicon-search"></span>
                         </button>
                     </td>
-                    <td class="col-2 product_name table-warning" scope="row"></td>
-                    <td class="col-2 product_name table-warning" scope="row"></td>
-                    <td class="col-1 date table-warning" scope="row"></td>
-                    <td class="col-2 unit_price" scope="row" pattern="^[0-9]" align="right" contenteditable="true"></td>
-                    <td class="col-1 quantity" scope="row" pattern="^[0-9]" align="right" contenteditable="true"></td>
-                    <!-- <td class="col-2 extended_price table-warning" scope="row" align="right"></td> -->
+                    <td class="col-2 invoice_date table-warning" scope="row"></td>
+                    <td class="col-2 invoice_full_amount table-warning" scope="row" align="right" contenteditable="false"></td>
+                    <td class="col-2 invoice_amount_remain table-warning" scope="row" align="right" contenteditable="false"></td>
+                    <td class="col-2 amount_paid_here" scope="row" pattern="^[0-9]" align="right" contenteditable="true"></td>
                     <td class="col-1"align="center">
                         <span class="table-remove glyphicon glyphicon-remove"></span>
                     </td>
@@ -162,10 +207,10 @@
             <table id='table_modal' class="modal-body table table-sm table-bordered">
                 <thead>
                     <tr>
-                        <th class='col-1'>#</th>
-                        <th class='col-3'><label id='model_header_1'>Code</label></th>
-                        <th class='col-5'><label id='model_header_2'>Name</label></th>
-                        <th class='col-3'><label id='model_header_3'>Note</label></th>
+                        <th class='col-1' scope="row">#</th>
+                        <th class='col-3' scope="row"><label id='model_header_1'>Invoice No</label></th>
+                        <th class='col-5' scope="row"><label id='model_header_2'>Invoice Date</label></th>
+                        <th class='col-3' scope="row"><label id='model_header_3'>Amount Due</label></th>
                         <td class='hide'></td>
                     </tr>
                 </thead>

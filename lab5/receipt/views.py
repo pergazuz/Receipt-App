@@ -247,3 +247,25 @@ class InvoiceDetail(View):
         data['invoicelineitem'] = invoicelineitem
 
         return JsonResponse(data)
+
+class PaymentMethodList(View):
+    def get(self, request):
+        paymentmethods = list(PaymentMethod.objects.all().values())
+        data = dict()
+        data['paymentmethods'] = paymentmethods
+        response = JsonResponse(data)
+        response["Access-Control-Allow-Origin"] = "*"
+        return response
+
+'''
+class PaymentMethodDetail(View):
+    def get(self, request, pk):
+        payment_method = get_object_or_404(PaymentMethod, pk=pk)
+
+
+        data = dict()
+        data['paymentmethods'] = model_to_dict(payment_method)
+        response = JsonResponse(data)
+        response["Access-Control-Allow-Origin"] = "*"
+        return response
+'''      
